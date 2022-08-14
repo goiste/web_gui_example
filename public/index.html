@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Satisfy" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/main.css">
+
+  <title>Web GUI Example</title>
+</head>
+<body>
+
+<div id="app">
+  <v-app>
+    <v-app-bar
+      app
+      dense
+      fixed
+      scroll-target="#dashboard"
+    >
+      <v-app-bar-title>System Monitor</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <span>{{ host.os }} ({{ host.arch }})</span>
+      <v-spacer></v-spacer>
+      <span>Started {{ host.boot_at | datetime }} ({{ host.uptime }})</span>
+    </v-app-bar>
+
+    <v-main id="dashboard">
+      <v-container fluid>
+        <v-container>
+          <v-flex
+            class="d-flex justify-center"
+          >
+            <v-card
+              width="800px"
+            >
+              <v-card-title>System details</v-card-title>
+              <v-card-text>
+                <v-list>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title>Platform</v-list-item-title>
+                      <v-list-item-subtitle>{{ host.platform }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title>Version</v-list-item-title>
+                      <v-list-item-subtitle>{{ host.version }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title>Running processes</v-list-item-title>
+                      <v-list-item-subtitle>{{ host.processes }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-container>
+
+        <v-container>
+          <v-flex
+            class="d-flex justify-center"
+          >
+            <v-card flat width="800px" class="d-flex justify-space-between">
+              <v-card width="384px" min-height="384px">
+                <v-card-title>CPU</v-card-title>
+                <v-card-text>
+                  <div class="text-center">
+                    <v-progress-circular
+                      :rotate="-90"
+                      :size="200"
+                      :width="30"
+                      :value="cpu.used_percent"
+                      color="teal"
+                    >
+                      <span class="text-h3">{{ cpu.used_percent }}%</span>
+                    </v-progress-circular>
+                  </div>
+                  <v-list class="mt-5">
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Name</v-list-item-title>
+                        <v-list-item-subtitle>{{ cpu.name }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Cores</v-list-item-title>
+                        <v-list-item-subtitle>{{ cpu.cores }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Threads</v-list-item-title>
+                        <v-list-item-subtitle>{{ cpu.threads }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-card-text>
+              </v-card>
+              <v-card width="384px" min-height="384px">
+                <v-card-title>RAM</v-card-title>
+                <v-card-text>
+                  <div class="text-center">
+                    <v-progress-circular
+                      :rotate="-90"
+                      :size="200"
+                      :width="30"
+                      :value="ram.used_percent"
+                      color="primary"
+                    >
+                      <span class="text-h3">{{ ram.used_percent }}%</span>
+                    </v-progress-circular>
+                  </div>
+                  <v-list class="mt-5">
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Total</v-list-item-title>
+                        <v-list-item-subtitle>{{ ram.total }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Used</v-list-item-title>
+                        <v-list-item-subtitle>{{ ram.used }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item two-line>
+                      <v-list-item-content>
+                        <v-list-item-title>Available</v-list-item-title>
+                        <v-list-item-subtitle>{{ ram.free }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-card-text>
+              </v-card>
+            </v-card>
+          </v-flex>
+        </v-container>
+
+      </v-container>
+    </v-main>
+  </v-app>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.4/polyfill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
